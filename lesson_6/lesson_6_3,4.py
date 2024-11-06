@@ -21,7 +21,7 @@ def check_name(name: str) -> str:
         return 'Ошибка: В имени должно быть минимум 3 символа.'
     elif name.count(' ') > 1:
         return "Ошибка: В имени между буквами допускается только 1 пробел."
-    return name
+    return None
 
 
 def check_age(age: int) -> int:
@@ -34,7 +34,7 @@ def check_age(age: int) -> int:
         return 'Ошибка: Минимальный возраст — 14 лет.'
     elif age > 111:
         return 'Ты кто?'
-    return age
+    return None
 
 
 def input_data():
@@ -43,31 +43,25 @@ def input_data():
         name = remove_space(input('Введите имя: '))
         age = int(input('Введите возраст: '))
 
-        if check_name(name) == name and check_age(age) == age:
+        if check_name(name) is None and check_age(age) is None:
             break
-        if check_name(name) != name:
+        if check_name(name) is not None:
             print(check_name(name))
-        if check_age(age) != age:
+        if check_age(age) is not None:
             # 3 if для того что бы выводило обе ошибки. из-за этого в програме 3 print.
             print(check_age(age))
     return name, age
 
 
-def rez_func(name: str, age: int) -> str:
+def get_passport_advise(name: str, age: int) -> str:
     """Результирующая функция"""
     default_text = f'Привет,{name.title()}! Тебе {age} лет.'
-    rez_text = ''
     if 16 <= age <= 17:
-        rez_text += default_text
-        rez_text += 'Нужно не забыть получить первый паспорт'
+        return default_text + 'Нужно не забыть получить первый паспорт'
     elif 25 <= age <= 26:
-        rez_text += default_text
-        rez_text += 'Не забудь заменить паспорт по достижению 25 лет.'
+        return default_text + 'Не забудь заменить паспорт по достижению 25 лет.'
     elif 45 <= age <= 46:
-        rez_text += default_text
-        rez_text += 'Не забудь заменить паспорт по достижению 45 лет.'
-    if len(rez_text) != 0:
-        return print(rez_text)
+        return default_text + 'Не забудь заменить паспорт по достижению 45 лет.'
 
 
 def random_number():
@@ -83,5 +77,5 @@ def random_number():
 
 if __name__ == "__main__":
     name, age = input_data()
-    rez_func(name, age)
+    print(get_passport_advise(name, age))
     random_number()
