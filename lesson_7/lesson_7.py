@@ -17,7 +17,7 @@
 7. перед запроса данных в main надо указывать счетчик ввода начиная с первой попытки.
 8. во время игры угадай число тоже должен быть счетчик, отоброжать с какой попытки угадал. начиная с 1.
 
-
+Alexandr: Это не оптимизация алгоритма.Все поправить.
 """
 import random
 
@@ -41,6 +41,9 @@ def validate_name(name: str) -> None:
 
 
 def validate_age(age: int) -> None:
+    # if age.isdigit() != True:
+    #     raise Exception('Ошибка: введите числовое значение')
+    
     if age <= 0:
         raise Exception('Ошибка: возраст не можеть быть равен или меньше 0')
     elif age < 14:
@@ -49,15 +52,17 @@ def validate_age(age: int) -> None:
         raise Exception('Ты кто?')
 
 
-def get_passport_advise(name: str, age: int) -> str:
-    """Результирующая функция"""
+def get_passport_advise(name: str, age: int) ->  None:
+    """Функция напоминания по замену паспорта"""
+    global result_text
+    result_text = ''
     default_text = f'Привет,{name.title()}! Тебе {age} лет.'
     if 16 <= age <= 17:
-        return default_text + 'Нужно не забыть получить первый паспорт'
+        result_text = default_text + 'Нужно не забыть получить первый паспорт'
     elif 25 <= age <= 26:
-        return default_text + 'Не забудь заменить паспорт по достижению 25 лет.'
+        result_text = default_text + 'Не забудь заменить паспорт по достижению 25 лет.'
     elif 45 <= age <= 46:
-        return default_text + 'Не забудь заменить паспорт по достижению 45 лет.'
+        result_text = default_text + 'Не забудь заменить паспорт по достижению 45 лет.'
 
 
 def guess_number_game() -> None:
@@ -76,7 +81,9 @@ def guess_number_game() -> None:
 
 def main() -> None:
     count = 0
+   
     while True:
+        
         count += 1
         print(f'Попытка номер: {count}')
         name = clear_whitespaces(input('Введите имя: '))
@@ -84,8 +91,9 @@ def main() -> None:
 
         try:
             age = int(age)
-        except ValueError as e:
-            print(f'я поймал ошибку: - {e}')
+        except ValueError:
+            print(f'я поймал ошибку: введите числовое значение')
+            continue
 
         try:
             validate_age(age)
@@ -94,12 +102,12 @@ def main() -> None:
             print(f'я поймал ошибку: - {e} ')
         else:
             break
-
-    if age in [16, 17, 25, 26, 45, 46]:
-        print(get_passport_advise(name, age))
-
+    get_passport_advise(name,age)
+    if result_text:
+        print(result_text)
+    
     guess_number_game()
-
+    
 
 if __name__ == "__main__":
     main()
