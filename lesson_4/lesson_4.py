@@ -53,14 +53,17 @@ def input_data():
     while True:
         name = remove_space(input('Введите имя: '))
         age = int(input('Введите возраст: '))
-
+        default_error = ''
         if check_name(name) == name and check_age(age) == age:
             break
-        if check_name(name) != name:
-            print(check_name(name))
-        if check_age(age) != age:
-            # 3 if для того что бы выводило обе ошибки. из-за этого в програме 3 print.
-            print(check_age(age))
+        else:
+            if check_name(name) != name:
+                default_error += f'{check_name(name)}\n'
+            if check_age(age) != age:
+                # 3 if для того что бы выводило обе ошибки. из-за этого в програме 3 print.
+                default_error += check_age(age)
+            print(default_error)
+        
     return name, age
 
 
