@@ -7,32 +7,32 @@ polindrom ,sptextce
 При этом введено может быть как слово, так и целые предложения с пробелами и с различными знаками препинания.
 Необходимо избегать всех символов кроме букв.
 А также не копировать входящие данные (например, развернуть строку через срез — это скопировать входящие данные)
+Aleander:
+Выглядит сложно, если честно. Можно очень сильно упростить. Сможешь сделать проще?)
 """
+
 
 def is_palindrome(text) -> str:
     """функия определяет является ли строка палиндромом или нет."""
     start = 0
     end = len(text) - 1
-    check = 0  # флаг указывает были ли буквы в строке
+    start_letter = text[start].lower()
+    end_letter = text[end].lower()
     while start < end:
-        if text[start].isalpha() == True and text[end].isalpha() == True:
-            if text[start].lower() == text[end].lower():
-                start += 1
-                end -= 1
-                check += 1
-            else:
-                return False
-        elif text[start].isalpha() == False:
+        if not start_letter.isalpha() :
             start += 1
-        elif text[end].isalpha() == False:
+        if not end_letter.isalpha():
             end -= 1
-    if check != 0:
-        return True
-    else:
+            continue
+        if start_letter == end_letter:
+            start += 1
+            end -= 1
+            continue
         return False
+    return True
 
 
-print(is_palindrome('f ?1/ f'))  # True
-print(is_palindrome('!/../!'))  # False
-
-
+print(is_palindrome('ra.ж ar'))  # True
+print(is_palindrome('папа'))  # False
+print(is_palindrome(' a,b a/'))  # True
+print(is_palindrome('Б/.,е1243л хл еб.'))  # True
