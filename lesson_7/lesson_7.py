@@ -11,35 +11,44 @@
 
 3. Счетчик попыток оставить на месте как есть
 
-4. Где вызывать ValueError"""
+4. Где вызывать ValueError
+Valentin: не понял 4 задание."""
 
 import random
 
 
 class Data:
+    """Ввод даных и их первичная обработка"""
+
     def __init__(self, name: str, age: str):
         self.age = age
         self.name = name
         self.clear_whitespaces()
         self.age = int(age)
-        
 
     def clear_whitespaces(self):
+        """Удаляет пробелы"""
         self.age = self.age.strip()
         self.name = self.name.strip()
 
 
 class Validate:
-    def __init__(self):
-        self.data_history = []
-        
-    def validate(self, data: Data):
-        self.data_history.append(data.name)
-        self.data_history.append(data.age)
-        self.validate_name()
-        self.validate_age()
+    """Валидация данных"""
 
-    def validate_name(self):
+    def __init__(self):
+        self.data_history = []  # список данных [0] - name, [1] - age
+
+    def validate(self, data: Data):
+        """Добавляем и проверяем данные"""
+        self.data_history.append(
+            data.name)  # добавляем имя в список data_histiry
+        # добавляем возраст в список data_histiry
+        self.data_history.append(data.age)
+        self.validate_name()  # проверка имени
+        self.validate_age()  # проверка возраста
+
+    def validate_name(self)->None:
+        """Проверка имени"""
         name = self.data_history[0]
         if name == False:
             raise Exception('Ошибка: пустое значиние')
@@ -52,7 +61,8 @@ class Validate:
             raise Exception(
                 'Ошибка: В имени должно быть минимум 3 символа.')
 
-    def validate_age(self):
+    def validate_age(self) -> None:
+        """Проверка возраста"""
         age = self.data_history[-1]
         if age <= 0:
             raise Exception(
@@ -62,11 +72,11 @@ class Validate:
         elif age > 111:
             raise Exception('Ты кто?')
 
-    def get_passport_advise(self):
-        """Результирующая функция"""
+    def get_passport_advise(self)-> None:
+        """Проверяет возраст и записывает совет если надо"""
         age = self.data_history[-1]
         name = self.data_history[0]
-        self.result_text = ''
+        self.result_text = '' # Выводим строку если не пустая 
         default_text = f'Привет,{name.title()}! Тебе {age} лет.'
         if 16 <= age <= 17:
             self.result_text = default_text + 'Нужно не забыть получить первый паспорт'
@@ -77,9 +87,10 @@ class Validate:
 
 
 def guess_number_game() -> None:
+    """Игра угадай число"""
     print('Давай поиграем!')
-    check = 0
-    count = 0
+    check = 0 # флаг для цикла
+    count = 0 # кол-во попыток угадать число
     rand_num = random.randrange(1, 6)
     while check == 0:
         count += 1
@@ -91,59 +102,30 @@ def guess_number_game() -> None:
 
 
 def main() -> None:
-    count = 0
+    """Основная функция"""
+    count = 0 # кол-во попыток ввода данных
     while True:
         count += 1
         print(f'Попытка номер: {count}')
         name = input('Введите имя: ')
         age = input('Введите возраст: ')
         try:
-            person = Data(name, age)
-            valid = Validate()
-            valid.validate(person)
+            person = Data(name, age) # 1.создаем обьект класса 'person' с данными 'name' и 'age'
+            valid = Validate() #  2.создаем обьект 'valid' 
+            valid.validate(person)  # 3.проверяем данные (2 и 3 пункт наверно надо обьеденить) 
         except Exception as e:
             print(f'я поймал ошибку: - {e}')
         else:
             break
 
-    
-    valid.get_passport_advise()
-    if valid.result_text:
-         print(valid.result_text)
+    valid.get_passport_advise()  # проверяем возраст на совет.
+    if valid.result_text:  # печатаем приветствие и совет если надо.
+        print(valid.result_text)
+
+    guess_number_game() # запускаем игру угадай число
 
 
 if __name__ == "__main__":
     main()
 
-# def main() -> None:
-#     count = 0
-   
-#     while True:
-        
-#         count += 1
-#         print(f'Попытка номер: {count}')
-#         name = clear_whitespaces(input('Введите имя: '))
-#         age = clear_whitespaces(input('Введите возраст: '))
-
-#         try:
-#             age = int(age)
-#         except ValueError:
-#             print(f'я поймал ошибку: введите числовое значение')
-#             continue
-
-#         try:
-#             validate_age(age)
-#             validate_name(name)
-#         except Exception as e:
-#             print(f'я поймал ошибку: - {e} ')
-#         else:
-#             break
-#     get_passport_advise(name,age)
-#     if result_text:
-#         print(result_text)
-    
-#     guess_number_game()
-    
-
-# if __name__ == "__main__":
-#     main()
+#wewq
