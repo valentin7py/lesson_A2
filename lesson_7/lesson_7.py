@@ -1,18 +1,14 @@
-"""/lesson7#readme
+"""
+Alexandr :
+1.в main функции ты каждый раз пересоздаешь класс validate (и называться он должен не как действие, а как существительное validator).
+В чем тогда смысл хранении истории, если этой истории не будет, она будет каждый раз пустая?
 
-1.+ int(age) нужно сделать после очистки строки
-от пробелов в конструкторе класса
+2.в try-except оборачивай только то, что ты ожидаешь, что выкинет ошибку.
+инициализация validator тебе не выкидывает никакой ошибки => нет смысла оборачивать в обработку исключений.
 
-2. в экземпляре класса создает переменную data_history,
-которая является пустым списком,
-но будет хранить объекты класса Data —
-это вам необходимо знать для того,
-чтобы вы могли сделать type hint для этой переменной
-
-3. Счетчик попыток оставить на месте как есть
-
-4. Где вызывать ValueError
-Valentin: не понял 4 задание."""
+3.Создаешь переменную, которой нет в init. Сейчас тебе может быть норм, а потом будешь плакать из-за такого спагетти кода, 
+когда хз почему и откуда создается переменная или не создается
+"""
 
 import random
 from exceptions import ValidateError
@@ -60,7 +56,7 @@ class Validate:
 
     def validate_name(self) -> None:
         """Проверка имени"""
-        name = self.data_history[0]
+        name = self.data_history[-2]
         if name == False:
             raise ValidateError('пустое значиние')
         elif name.count(' ') > 1:
@@ -86,15 +82,14 @@ class Validate:
     def get_passport_advise(self) -> None:
         """Проверяет возраст и записывает совет если надо"""
         age = self.data_history[-1]
-        name = self.data_history[0]
-        self.result_text = ''  # Выводим строку если не пустая
+        name = self.data_history[-2]
         default_text = f'Привет,{name.title()}! Тебе {age} лет.'
         if 16 <= age <= 17:
-            self.result_text = default_text + 'Нужно не забыть получить первый паспорт'
+            print(default_text + 'Нужно не забыть получить первый паспорт')
         elif 25 <= age <= 26:
-            self.result_text = default_text + 'Не забудь заменить паспорт по достижению 25 лет.'
+            print(default_text + 'Не забудь заменить паспорт по достижению 25 лет.')
         elif 45 <= age <= 46:
-            self.result_text = default_text + 'Не забудь заменить паспорт по достижению 45 лет.'
+            print(default_text + 'Не забудь заменить паспорт по достижению 45 лет.')
 
 
 def guess_number_game() -> None:
@@ -115,7 +110,9 @@ def guess_number_game() -> None:
 def main() -> None:
     """Основная функция"""
     count = 0  # кол-во попыток ввода данных
+    validator = Validate() # создаем обьект 'validator'
     while True:
+        print(validator.data_history)
         count += 1
         print(f'Попытка номер: {count}')
         name = input('Введите имя: ')
@@ -123,18 +120,17 @@ def main() -> None:
         try:
             # 1.создаем обьект класса 'person' с данными 'name' и 'age'
             person = Data(name, age)
-            # 2.создаем обьект 'valid'
-            valid = Validate() 
             # 3.проверяем данные (2 и 3 пункт наверно надо обьеденить)
-            valid.validate(person)
+            validator.validate(person)
         except ValidateError as e:
             print(f'я поймал ошибку: - {e}')
         else:
             break
 
-    valid.get_passport_advise()  # проверяем возраст на совет.
-    if valid.result_text:  # печатаем приветствие и совет если надо.
-        print(valid.result_text)
+    validator.get_passport_advise()  #если возраст подходит печатаем информация о паспорте
+    print(validator.data_history)
+    # if validator.result_text:  # печатаем приветствие и совет если надо.
+    #     print(validator.result_text)
 
     guess_number_game()  # запускаем игру угадай число
 
