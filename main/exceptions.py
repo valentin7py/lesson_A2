@@ -3,3 +3,5 @@ class RegistrationError(Exception):
 
 class AuthorizationError(Exception):
     pass
+class ValidateError(Exception):
+    pass
