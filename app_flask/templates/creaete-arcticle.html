@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Создаем пост
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Добавление статьи</h1>
+    <form method="post">
+        <input type="text" name="name_car" id="name_car" class="form-control" placeholder="Введите название марки автомобиля"><br>
+        <textarea name='age_car' id='age_car' class='form-control' placeholder="Введите год автомобиля"></textarea><br>
+        <textarea name='mileage_car' id='mileage_car' class='form-control' placeholder="Введите пробег авто"></textarea><br>
+        <textarea name='price_car' id=' price_car' class='form-control' placeholder="Введите стоимость автомобиля"></textarea><br>
+        <input type="submit" class="btn btn-success" value="отправить">
+    </form>        
+</div>
+{% endblock %}

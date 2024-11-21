@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{articles.name_car}}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>{{articles.name_car}}</h1>
+
+    <div class="alert alert-info">
+        <p>Год автомобиля - {{articles.age_car}}</p>
+        <p>Пробег автомобиля - {{articles.mileage_car}}</p>
+        <p>Цена автомобиля - {{articles.price_car}}</p>
+        <p><b>Дата публикации: {{articles.date.date()}}</b></p>
+        <a href="/posts/{{ articles.id }}/delete" class="=btn btn-danger">Удалить</a>
+        <a href="/posts/{{ articles.id }}/update" class="=btn btn-seccess">Редактировать</a>
+    </div>
+</div>
+{% endblock %}
