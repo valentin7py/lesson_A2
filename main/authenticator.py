@@ -1,10 +1,12 @@
-"""lesson 11
+"""
+Alexand :
+С классом Authenticator не ок:
+1. в задаче написано, что нужно сохранять в iso format дату и время. А у тебя по своему формату.
+2. os.path.isfile возвращает bool, который ты проверяешь, чтобы вернуть...  bool. Можно упростить
+3. большая вложенность, можно упростить, сделать читабельнее и понятнее ( class authorize)
+4. С json снова неверно в отношении даты и времени.
 
-1. Доделать последнюю домашку
-
-2. В файл сохранять теперь данные в формате json
-
-3. Разобраться как сериализовать datetime в json (Гугл, а потом написать подробно в комменте почему именно так)"""
+"""
 import os
 from exceptions import RegistrationError, AuthorizationError
 import datetime
@@ -24,11 +26,11 @@ class Authenticator:
 
     def _is_auth_file_exist(self) -> bool:
         """Проверяем наличие файла `auth.txt` рядом (в той же папке)"""
-        is_file_exist = "/home/valenit/Документы/studies/lesson_a/lessons_A/main/auth.json"
-        #  почему то рабоатет только с полным путем.
-        if os.path.isfile(is_file_exist):
-            return True
-        return False
+        is_file_exist = "main/auth.txt" 
+        return os.path.isfile(is_file_exist)
+
+    
+           
 
     def _read_auth_file(self) -> None:
         """Данные из файла записываем в переменные"""
@@ -42,18 +44,21 @@ class Authenticator:
 
     def authorize(self, email: str, password: str) -> None:
         """1.Проеврка сущесвует ли  email.
-           2.Сравниваем логин и пароль из файла и атрибута"""
-        if email:
-            if email != self.email or password != self._password:
-                self.errors_count += 1
-                self._update_auth_file()
-                raise AuthorizationError('Неверный пароль или логин')
-            else:
-                self._update_auth_file()
-        else:
+        #    2.Сравниваем логин и пароль из файла и атрибута"""
+      
+        if not email:
             self.errors_count += 1
+            self._update_auth_file()
             raise AuthorizationError('Пустой логин')
-
+        
+        if email != self.email or password != self._password:
+            self.errors_count += 1
+            self._update_auth_file()
+            raise AuthorizationError('Неверный пароль или логин')
+        
+        self._update_auth_file()
+    
+             
     def registrate(self, email: str, password: str)-> None:
         """Проверяем зарегистрирован ли пользователь"""
         if self.email:  # проверка наличия файла в папке
@@ -73,7 +78,8 @@ class Authenticator:
     def _update_auth_file(self)-> None:
         """Перезаписывает данные в json файл"""
         utc_now = datetime.datetime.utcnow() # получаем время 
-        utc_date_time = utc_now.strftime("%Y-%m-%d %H:%M:%S") # переводим в удобный формат
+        utc_date_time = utc_now.isoformat(" ","seconds")
+        # utc_date_time = utc_now.strftime("%Y-%m-%d %H:%M:%S") # переводим в удобный формат
         data = {'email': self.email, 'password': self._password,
                 'last_success_email_at':utc_date_time , 'errors_count': self.errors_count}
         with open('main/auth.json','w') as file:

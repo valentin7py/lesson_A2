@@ -1,10 +1,8 @@
 """
-4. *Написать класс валидатора, написать валидацию для пароля:
-минимум 4 символа, минимум один заглавный символ, минимум один прописной символ, 
-минимум одна цифра, минимум один спецсимвол.
-Хэшировать пароль любым алгоритмом на выбор, обосновать в комменте выбор алгоритма (можно хоть свой сделать). Написать метод валидации почты.
-Вместо логина у вас должен быть ввод почтового адреса.
-Valentin : при данной реализации в auth.json количетво попыток не увеличивается !!!
+Alexandr:
+5.вызывать протектед метод вне класса — не ок
+6.очень странно, что "класс валидации пароля и логина" по какой-то причине записывает что-то в файл.
+хотя класс и методы должны отвечать только за решение одной конкретной проблемы. Тоже самое касается valid_password
 """
 from authenticator import Authenticator
 from validator import Validate
@@ -41,16 +39,9 @@ def main() -> bool:
     password = input('Введите пароль: ')
     
 
-    try:
-        validator._valid_forma_email(email) # проверяем пароль 
-        validator._valid_forma_password(password)  
-    except ValidateError as e:
-        print(e)
-        return False
-
     if authenticator.email:     
         try:
-            validator.valid_password(password) # сравниваем хеш нового и старого пароля
+            validator.valid_email_pass(email,password)
             authenticator.authorize(email,password) # авторизация
             authenticator.user_greeting() # финальное приветсвие
             guess_number_game()
@@ -60,7 +51,7 @@ def main() -> bool:
             print(e)
     else: 
         try:#
-            validator._hash_password(password) # хэшируем пароль
+            validator.valid_email_pass(email,password)
             authenticator.registrate(email,password)# регистрируем пользователя
             guess_number_game()
             return True
@@ -74,3 +65,5 @@ if __name__ == "__main__":
     main()
     
 
+#MmDSSA2D@MMM.MMASD 
+# "2024-11-22 13:51:10"
